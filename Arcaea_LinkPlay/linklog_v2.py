@@ -112,9 +112,9 @@ def parse_log_line(line):
         "host_change": r"Player `(?P<player_name>\w+)` becomes the host of room `(?P<room_code>\w+)`",
         "vote_song": r"Player `(?P<player_name>\w+)` votes for song `(?P<song_id>\d+)`",
         "selected_song": r"Room `(?P<room_code>\w+)` selected song `(?P<song_id>\d+)`",
-        "start_song": r"Room `(?P<room_code>\w+)` starts playing song", #`(?P<song_id>\d+)`
+        "start_song": r"Room `(?P<room_code>\w+)` starts playing song",  # `(?P<song_id>\d+)`
         "random_selected_song": r"Room `(?P<room_code>\w+)` randomly selected song `(?P<song_id>\d+)`",
-        "finish_song": r"Room `(?P<room_code>\w+)` finishes song", #`(?P<song_id>\d+)`
+        "finish_song": r"Room `(?P<room_code>\w+)` finishes song",  # `(?P<song_id>\d+)`
         "score": (
             r"Player `(?P<player_name>\w+)` - "
             r"Score: (?P<score>\d+), Cleartype: (?P<cleartype>\d+), Difficulty: (?P<difficulty>\d+), "

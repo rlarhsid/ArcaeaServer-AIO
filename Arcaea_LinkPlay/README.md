@@ -1,4 +1,4 @@
-# arclp-webhook
+# LinkPlay-Webhook
 The worst Linkplay webhook utilty ever made (Highly inspired by https://github.com/burritosoftware/arcaea-linkplay-webhook)
 
 ## Warnings
