@@ -13,8 +13,8 @@ from .util import aes_gcm_128_decrypt, aes_gcm_128_encrypt
 socket.setdefaulttimeout(Constant.LINKPLAY_TIMEOUT)
 
 
-def get_song_unlock(client_song_map: 'dict[str, list]') -> bytes:
-    '''处理可用歌曲bit，返回bytes'''
+def get_song_unlock(client_song_map: "dict[str, list]") -> bytes:
+    """处理可用歌曲bit，返回bytes"""
 
     user_song_unlock = [0] * Constant.LINKPLAY_UNLOCK_LENGTH
 
@@ -40,14 +40,16 @@ class Player(UserInfo):
 
         self.last_match_timestamp: int = 0
         self.match_times: int = None  # 已匹配次数，减 1 后乘 5 就大致是匹配时间
-        self.match_room: Room = None  # 匹配到的房间，这个仅用来在两个人同时匹配时使用，一人建房，通知另一个人加入
+        self.match_room: Room = (
+            None  # 匹配到的房间，这个仅用来在两个人同时匹配时使用，一人建房，通知另一个人加入
+        )
 
     def to_dict(self) -> dict:
         return {
-            'userId': self.user_id,
-            'playerId': str(self.player_id),
-            'token': str(self.token),
-            'key': (b64encode(self.key)).decode()
+            "userId": self.user_id,
+            "playerId": str(self.player_id),
+            "token": str(self.token),
+            "key": (b64encode(self.key)).decode(),
         }
 
     @property
@@ -62,7 +64,7 @@ class Player(UserInfo):
         self.__song_unlock = get_song_unlock(self.client_song_map)
 
     def calc_available_chart_num(self, song_unlock: bytes) -> int:
-        '''计算交叠后可用谱面数量'''
+        """计算交叠后可用谱面数量"""
         new_unlock = [i & j for i, j in zip(self.song_unlock, song_unlock)]
         s = 0
         for i in range(len(new_unlock)):
@@ -75,30 +77,31 @@ class Player(UserInfo):
 class Room:
     def __init__(self) -> None:
         self.room_id: int = 0
-        self.room_code: str = 'AAAA00'
+        self.room_code: str = "AAAA00"
 
         self.song_unlock: bytes = None
 
-        self.share_token: str = 'abcde12345'
+        self.share_token: str = "abcde12345"
 
     def to_dict(self) -> dict:
         return {
-            'roomId': str(self.room_id),
-            'roomCode': self.room_code,
-            'orderedAllowedSongs': (b64encode(self.song_unlock)).decode(),
-            'shareToken': self.share_token
+            "roomId": str(self.room_id),
+            "roomCode": self.room_code,
+            "orderedAllowedSongs": (b64encode(self.song_unlock)).decode(),
+            "shareToken": self.share_token,
         }
 
 
 class RemoteMultiPlayer:
-    TCP_AES_KEY = Constant.LINKPLAY_TCP_SECRET_KEY.encode(
-        'utf-8').ljust(16, b'\x00')[:16]
+    TCP_AES_KEY = Constant.LINKPLAY_TCP_SECRET_KEY.encode("utf-8").ljust(16, b"\x00")[
+        :16
+    ]
 
     def __init__(self) -> None:
-        self.user: 'Player' = None
-        self.room: 'Room' = None
+        self.user: "Player" = None
+        self.room: "Room" = None
 
-        self.data_recv: 'dict | list' = None
+        self.data_recv: "dict | list" = None
 
     def to_dict(self) -> dict:
         return dict(self.room.to_dict(), **self.user.to_dict())
@@ -106,157 +109,159 @@ class RemoteMultiPlayer:
     @staticmethod
     def tcp(data: bytes) -> bytes:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.connect((Constant.LINKPLAY_HOST,
-                          Constant.LINKPLAY_TCP_PORT))
+            sock.connect((Constant.LINKPLAY_HOST, Constant.LINKPLAY_TCP_PORT))
 
             sock.sendall(data)
             try:
-                cipher_len = int.from_bytes(sock.recv(8), byteorder='little')
+                cipher_len = int.from_bytes(sock.recv(8), byteorder="little")
                 if cipher_len > Constant.LINKPLAY_TCP_MAX_LENGTH:
-                    raise ArcError(
-                        'Too long body from link play server', status=400)
+                    raise ArcError("Too long body from link play server", status=400)
                 iv = sock.recv(12)
                 tag = sock.recv(16)
                 ciphertext = sock.recv(cipher_len)
                 received = aes_gcm_128_decrypt(
-                    RemoteMultiPlayer.TCP_AES_KEY, b'', iv, ciphertext, tag)
+                    RemoteMultiPlayer.TCP_AES_KEY, b"", iv, ciphertext, tag
+                )
             except socket.timeout as e:
                 raise Timeout(
-                    'Timeout when waiting for data from link play server.', status=400) from e
+                    "Timeout when waiting for data from link play server.", status=400
+                ) from e
             # print(received)
             return received
 
     def data_swap(self, data: dict) -> dict:
 
         iv, ciphertext, tag = aes_gcm_128_encrypt(
-            self.TCP_AES_KEY, dumps(data).encode('utf-8'), b'')
-        send_data = Constant.LINKPLAY_AUTHENTICATION.encode(
-            'utf-8') + len(ciphertext).to_bytes(8, byteorder='little') + iv + tag + ciphertext
+            self.TCP_AES_KEY, dumps(data).encode("utf-8"), b""
+        )
+        send_data = (
+            Constant.LINKPLAY_AUTHENTICATION.encode("utf-8")
+            + len(ciphertext).to_bytes(8, byteorder="little")
+            + iv
+            + tag
+            + ciphertext
+        )
         recv_data = self.tcp(send_data)
         self.data_recv = loads(recv_data)
 
-        code = self.data_recv['code']
+        code = self.data_recv["code"]
         if code != 0:
-            raise ArcError(f'Link Play error code: {code}', code, status=400)
+            raise ArcError(f"Link Play error code: {code}", code, status=400)
 
         return self.data_recv
 
-    def create_room(self, user: 'Player' = None) -> None:
-        '''创建房间'''
+    def create_room(self, user: "Player" = None) -> None:
+        """创建房间"""
         if user is not None:
             self.user = user
         user.select_user_about_link_play()
-        self.data_swap({
-            'endpoint': 'create_room',
-            'data': {
-                'name': self.user.name,
-                'song_unlock': b64encode(self.user.song_unlock).decode('utf-8'),
-                'rating_ptt': self.user.rating_ptt,
-                'is_hide_rating': self.user.is_hide_rating,
-                'match_times': self.user.match_times
+        self.data_swap(
+            {
+                "endpoint": "create_room",
+                "data": {
+                    "name": self.user.name,
+                    "song_unlock": b64encode(self.user.song_unlock).decode("utf-8"),
+                    "rating_ptt": self.user.rating_ptt,
+                    "is_hide_rating": self.user.is_hide_rating,
+                    "match_times": self.user.match_times,
+                },
             }
-        })
+        )
 
         self.room = Room()
-        x = self.data_recv['data']
-        self.room.room_code = x['room_code']
-        self.room.room_id = int(x['room_id'])
+        x = self.data_recv["data"]
+        self.room.room_code = x["room_code"]
+        self.room.room_id = int(x["room_id"])
         self.room.song_unlock = self.user.song_unlock
-        self.user.token = int(x['token'])
-        self.user.key = b64decode(x['key'])
-        self.user.player_id = int(x['player_id'])
+        self.user.token = int(x["token"])
+        self.user.key = b64decode(x["key"])
+        self.user.player_id = int(x["player_id"])
 
-    def join_room(self, room: 'Room' = None, user: 'Player' = None) -> None:
-        '''加入房间'''
+    def join_room(self, room: "Room" = None, user: "Player" = None) -> None:
+        """加入房间"""
         if user is not None:
             self.user = user
         if room is not None:
             self.room = room
 
         self.user.select_user_about_link_play()
-        self.data_swap({
-            'endpoint': 'join_room',
-            'data': {
-                'name': self.user.name,
-                'song_unlock': b64encode(self.user.song_unlock).decode('utf-8'),
-                'room_code': self.room.room_code,
-                'rating_ptt': self.user.rating_ptt,
-                'is_hide_rating': self.user.is_hide_rating,
-                'match_times': self.user.match_times
+        self.data_swap(
+            {
+                "endpoint": "join_room",
+                "data": {
+                    "name": self.user.name,
+                    "song_unlock": b64encode(self.user.song_unlock).decode("utf-8"),
+                    "room_code": self.room.room_code,
+                    "rating_ptt": self.user.rating_ptt,
+                    "is_hide_rating": self.user.is_hide_rating,
+                    "match_times": self.user.match_times,
+                },
             }
-        })
-        x = self.data_recv['data']
-        self.room.room_code = x['room_code']
-        self.room.room_id = int(x['room_id'])
-        self.room.song_unlock = b64decode(x['song_unlock'])
-        self.user.token = int(x['token'])
-        self.user.key = b64decode(x['key'])
-        self.user.player_id = int(x['player_id'])
+        )
+        x = self.data_recv["data"]
+        self.room.room_code = x["room_code"]
+        self.room.room_id = int(x["room_id"])
+        self.room.song_unlock = b64decode(x["song_unlock"])
+        self.user.token = int(x["token"])
+        self.user.key = b64decode(x["key"])
+        self.user.player_id = int(x["player_id"])
 
-    def update_room(self, user: 'Player' = None) -> None:
-        '''更新房间'''
+    def update_room(self, user: "Player" = None) -> None:
+        """更新房间"""
         if user is not None:
             self.user = user
 
         self.user.select_user_about_link_play()
-        self.data_swap({
-            'endpoint': 'update_room',
-            'data': {
-                'token': self.user.token,
-                'rating_ptt': self.user.rating_ptt,
-                'is_hide_rating': self.user.is_hide_rating
+        self.data_swap(
+            {
+                "endpoint": "update_room",
+                "data": {
+                    "token": self.user.token,
+                    "rating_ptt": self.user.rating_ptt,
+                    "is_hide_rating": self.user.is_hide_rating,
+                },
             }
-        })
+        )
 
         self.room = Room()
-        x = self.data_recv['data']
-        self.room.room_code = x['room_code']
-        self.room.room_id = int(x['room_id'])
-        self.room.song_unlock = b64decode(x['song_unlock'])
-        self.user.key = b64decode(x['key'])
-        self.user.player_id = int(x['player_id'])
+        x = self.data_recv["data"]
+        self.room.room_code = x["room_code"]
+        self.room.room_id = int(x["room_id"])
+        self.room.song_unlock = b64decode(x["song_unlock"])
+        self.user.key = b64decode(x["key"])
+        self.user.player_id = int(x["player_id"])
 
     def get_rooms(self, offset=0, limit=50) -> dict:
-        '''获取房间列表'''
-        self.data_swap({
-            'endpoint': 'get_rooms',
-            'data': {
-                'offset': offset,
-                'limit': limit
-            }
-        })
+        """获取房间列表"""
+        self.data_swap(
+            {"endpoint": "get_rooms", "data": {"offset": offset, "limit": limit}}
+        )
 
-        return self.data_recv['data']
+        return self.data_recv["data"]
 
     def select_room(self, room_code: str = None, share_token: str = None) -> dict:
-        self.data_swap({
-            'endpoint': 'select_room',
-            'data': {
-                'room_code': room_code,
-                'share_token': share_token
+        self.data_swap(
+            {
+                "endpoint": "select_room",
+                "data": {"room_code": room_code, "share_token": share_token},
             }
-        })
+        )
 
-        return self.data_recv['data']
+        return self.data_recv["data"]
 
     def get_match_rooms(self) -> dict:
-        '''获取一定数量的公共房间列表'''
-        self.data_swap({
-            'endpoint': 'get_match_rooms',
-            'data': {
-                'limit': 100
-            }
-        })
+        """获取一定数量的公共房间列表"""
+        self.data_swap({"endpoint": "get_match_rooms", "data": {"limit": 100}})
 
-        return self.data_recv['data']
+        return self.data_recv["data"]
 
 
 class MatchStore:
 
     last_get_rooms_timestamp = 0
-    room_cache: 'list[Room]' = []
+    room_cache: "list[Room]" = []
 
-    player_queue: 'dict[int, Player]' = {}
+    player_queue: "dict[int, Player]" = {}
 
     lock = RLock()
 
@@ -268,12 +273,15 @@ class MatchStore:
 
     def refresh_rooms(self):
         now = time()
-        if now - self.last_get_rooms_timestamp < Constant.LINKPLAY_MATCH_GET_ROOMS_INTERVAL:
+        if (
+            now - self.last_get_rooms_timestamp
+            < Constant.LINKPLAY_MATCH_GET_ROOMS_INTERVAL
+        ):
             return
-        MatchStore.room_cache = self.remote.get_match_rooms()['rooms']
+        MatchStore.room_cache = self.remote.get_match_rooms()["rooms"]
         MatchStore.last_get_rooms_timestamp = now
 
-    def init_player(self, user: 'Player'):
+    def init_player(self, user: "Player"):
         user.match_times = 0
         MatchStore.player_queue[user.user_id] = user
         user.last_match_timestamp = time()
@@ -290,7 +298,10 @@ class MatchStore:
 
     def memory_clean(self):
         now = time()
-        if now - self.last_memory_clean_timestamp < Constant.LINKPLAY_MEMORY_CLEAN_INTERVAL:
+        if (
+            now - self.last_memory_clean_timestamp
+            < Constant.LINKPLAY_MEMORY_CLEAN_INTERVAL
+        ):
             return
         with self.lock:
             for i in MatchStore.player_queue:
@@ -300,8 +311,7 @@ class MatchStore:
     def match(self, user_id: int):
         user = MatchStore.player_queue.get(user_id)
         if user is None:
-            raise ArcError(
-                f'User `{user_id}` not found in match queue.', code=999)
+            raise ArcError(f"User `{user_id}` not found in match queue.", code=999)
 
         if user.match_room is not None:
             # 二人开新房，第二人加入
@@ -312,8 +322,11 @@ class MatchStore:
 
         self.refresh_rooms()
 
-        rule = min(user.match_times, len(Constant.LINKPLAY_MATCH_PTT_ABS) -
-                   1, len(Constant.LINKPLAY_MATCH_UNLOCK_MIN) - 1)
+        rule = min(
+            user.match_times,
+            len(Constant.LINKPLAY_MATCH_PTT_ABS) - 1,
+            len(Constant.LINKPLAY_MATCH_UNLOCK_MIN) - 1,
+        )
         ptt_abs = Constant.LINKPLAY_MATCH_PTT_ABS[rule]
         unlock_min = Constant.LINKPLAY_MATCH_UNLOCK_MIN[rule]
 
@@ -321,18 +334,27 @@ class MatchStore:
         for i in MatchStore.room_cache:
             f = True
             num = 0
-            for j in i['players']:
-                if j['player_id'] != 0:
+            for j in i["players"]:
+                if j["player_id"] != 0:
                     num += 1
-                    if abs(user.rating_ptt - j['rating_ptt']) >= ptt_abs:
+                    if abs(user.rating_ptt - j["rating_ptt"]) >= ptt_abs:
                         f = False
                         break
 
             # 有玩家非正常退房时，next_state_timestamp 不为 0，有概率新玩家进不来，所以使用 num 统计玩家数量
 
-            if f and user.calc_available_chart_num(b64decode(i['song_unlock'])) >= unlock_min and ((time() + 2) * 1000000 < i['next_state_timestamp'] or i['next_state_timestamp'] <= 0 or num == 1):
+            if (
+                f
+                and user.calc_available_chart_num(b64decode(i["song_unlock"]))
+                >= unlock_min
+                and (
+                    (time() + 2) * 1000000 < i["next_state_timestamp"]
+                    or i["next_state_timestamp"] <= 0
+                    or num == 1
+                )
+            ):
                 room = Room()
-                room.room_code = i['room_code']
+                room.room_code = i["room_code"]
                 user.c = self.c
                 self.remote.join_room(room, user)
                 self.clean_room_cache()
@@ -343,10 +365,18 @@ class MatchStore:
 
         # 二人开新房，第一人开房
         for p in MatchStore.player_queue.values():
-            if p.user_id == user_id or now - p.last_match_timestamp > Constant.LINKPLAY_MATCH_TIMEOUT:
+            if (
+                p.user_id == user_id
+                or now - p.last_match_timestamp > Constant.LINKPLAY_MATCH_TIMEOUT
+            ):
                 continue
             new_rule = min(rule, p.match_times)
-            if abs(user.rating_ptt - p.rating_ptt) < Constant.LINKPLAY_MATCH_PTT_ABS[new_rule] and user.calc_available_chart_num(p.song_unlock) >= Constant.LINKPLAY_MATCH_UNLOCK_MIN[new_rule]:
+            if (
+                abs(user.rating_ptt - p.rating_ptt)
+                < Constant.LINKPLAY_MATCH_PTT_ABS[new_rule]
+                and user.calc_available_chart_num(p.song_unlock)
+                >= Constant.LINKPLAY_MATCH_UNLOCK_MIN[new_rule]
+            ):
                 user.c = self.c
                 self.remote.create_room(user)
                 self.clear_player(user_id)

@@ -7,10 +7,10 @@ from core.user import UserOnline
 from .auth import auth_required
 from .func import arc_try, success_return
 
-bp = Blueprint('present', __name__, url_prefix='/present')
+bp = Blueprint("present", __name__, url_prefix="/present")
 
 
-@bp.route('/me', methods=['GET'])  # 用户奖励信息
+@bp.route("/me", methods=["GET"])  # 用户奖励信息
 @auth_required(request)
 @arc_try
 def present_info(user_id):
@@ -21,7 +21,7 @@ def present_info(user_id):
         return success_return(x.to_dict_list())
 
 
-@bp.route('/me/claim/<present_id>', methods=['POST'])  # 礼物确认
+@bp.route("/me/claim/<present_id>", methods=["POST"])  # 礼物确认
 @auth_required(request)
 @arc_try
 def claim_present(user_id, present_id):

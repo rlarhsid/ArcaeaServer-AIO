@@ -28,4 +28,6 @@ class ArcLimiter:
         return flag
 
     def test(self, key: str) -> bool:
-        return all(self.strategy.test(limit, self.namespace, key) for limit in self.limits)
+        return all(
+            self.strategy.test(limit, self.namespace, key) for limit in self.limits
+        )

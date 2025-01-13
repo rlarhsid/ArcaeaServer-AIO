@@ -1,48 +1,45 @@
-{% extends 'base.html' %}
-{% block header %}
+{% extends 'base.html' %} {% block header %}
 <h1>{% block title %}Change the purchase's items{% endblock %}</h1>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <form action="/web/changepurchaseitem" method="post">
-    <div class="title">Add the purchase's item</div>
-    <label for="purchase_name">Purchase name</label>
-    <input name="purchase_name" id="purchase_name" required>
-    <label for="item_id">ID of the item</label>
-    <input name="item_id" id="item_id" required>
-    <label for="type">Type</label>
-    <div>
-        <select name="type">
-            <option value='single' selected>Single song</option>
-            <option value='pack'>Song pack</option>
-            <option value='world_song'>World song</option>
-            <option value='character'>Character</option>
-            <option value='core'>Core</option>
-        </select>
-    </div>
-    <label for="amount">Amount</label>
-    <input name="amount" id="amount" value="1" required>
-    <br />
-    <input type="submit" value="Add">
+  <div class="title">Add the purchase's item</div>
+  <label for="purchase_name">Purchase name</label>
+  <input name="purchase_name" id="purchase_name" required />
+  <label for="item_id">ID of the item</label>
+  <input name="item_id" id="item_id" required />
+  <label for="type">Type</label>
+  <div>
+    <select name="type">
+      <option value="single" selected>Single song</option>
+      <option value="pack">Song pack</option>
+      <option value="world_song">World song</option>
+      <option value="character">Character</option>
+      <option value="core">Core</option>
+    </select>
+  </div>
+  <label for="amount">Amount</label>
+  <input name="amount" id="amount" value="1" required />
+  <br />
+  <input type="submit" value="Add" />
 </form>
 
 <form action="/web/changepurchaseitem/delete" method="post">
-    <div class="title">Delete the purchase's item</div>
-    <label for="purchase_name">Purchase name</label>
-    <input name="purchase_name" id="purchase_name" required>
-    <label for="item_id">ID of the item</label>
-    <input name="item_id" id="item_id" required>
-    <label for="type">Type</label>
-    <div>
-        <select name="type">
-            <option value='single' selected>Single</option>
-            <option value='pack'>Pack</option>
-            <option value='world_song'>World song</option>
-            <option value='character'>Character</option>
-            <option value='core'>Core</option>
-        </select>
-    </div>
-    <br />
-    <input type="submit" value="Delete">
+  <div class="title">Delete the purchase's item</div>
+  <label for="purchase_name">Purchase name</label>
+  <input name="purchase_name" id="purchase_name" required />
+  <label for="item_id">ID of the item</label>
+  <input name="item_id" id="item_id" required />
+  <label for="type">Type</label>
+  <div>
+    <select name="type">
+      <option value="single" selected>Single</option>
+      <option value="pack">Pack</option>
+      <option value="world_song">World song</option>
+      <option value="character">Character</option>
+      <option value="core">Core</option>
+    </select>
+  </div>
+  <br />
+  <input type="submit" value="Delete" />
 </form>
 {% endblock %}

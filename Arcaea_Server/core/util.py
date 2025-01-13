@@ -37,9 +37,9 @@ def md5(code: str) -> str:
 
 
 def get_file_md5(file_path: str) -> str:
-    '''计算文件MD5，假设是文件'''
+    """计算文件MD5，假设是文件"""
     myhash = hashlib.md5()
-    with open(file_path, 'rb') as f:
+    with open(file_path, "rb") as f:
         while True:
             b = f.read(8192)
             if not b:
@@ -50,7 +50,7 @@ def get_file_md5(file_path: str) -> str:
 
 
 def try_rename(path: str, new_path: str) -> str:
-    '''尝试重命名文件，并尝试避免命名冲突（在后面加自增数字），返回最终路径'''
+    """尝试重命名文件，并尝试避免命名冲突（在后面加自增数字），返回最终路径"""
     final_path = new_path
     if os.path.exists(new_path):
         i = 1
@@ -64,11 +64,11 @@ def try_rename(path: str, new_path: str) -> str:
 
 
 def get_today_timestamp():
-    '''相对于本机本地时间的今天0点的时间戳'''
+    """相对于本机本地时间的今天0点的时间戳"""
     return int(mktime(date.today().timetuple()))
 
 
-def parse_version(s: str) -> 'list[int]':
-    '''解析版本号'''
-    s_number = "".join(x for x in s if x.isdigit() or x == '.')
-    return list(map(int, [x for x in s_number.split('.') if x != '']))
+def parse_version(s: str) -> "list[int]":
+    """解析版本号"""
+    s_number = "".join(x for x in s if x.isdigit() or x == ".")
+    return list(map(int, [x for x in s_number.split(".") if x != ""]))
