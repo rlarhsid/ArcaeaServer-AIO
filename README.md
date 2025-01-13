@@ -1,8 +1,8 @@
-# introducing the worst fork of arcaea-server 
-a fork of lost's arcaea-server with stuffs (terribly implemented) 
+# Have you ever thought of a fork's fork?
+All-in-one package repo. A fork of AriArcaeaServer, which is a fork of Lost's Arcaea-Server.
  
-- support for 6.0.0 
-- insight 
+# This repo has:
+- Database pre-installed (6.0 song support)
+- My previous tools installed (Discord B30 bot, Linkplay bot)
+- Most of maps made & set (Some BYD, Breached Maps missing)
 
-u can just drag and drop to ur existing server and itll work (dont) 
-death
