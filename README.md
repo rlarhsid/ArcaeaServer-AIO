@@ -5,5 +5,4 @@ All-in-one package repo. A fork of AriArcaeaServer, which is a fork of Lost's Ar
 - Database pre-installed (6.0 song support)
 - My previous tools installed (Discord B30 bot, Linkplay bot)
 - Most of maps made & set (Some BYD, Breached Maps missing)
-
-+ Keep in note! the "env" files needs to be renamed to ".env" to work properly. Using a Mac is a nightmare 🔥
+- Keep in note! the "env" files needs to be renamed to ".env" to work properly. Using a Mac is a nightmare 🔥
