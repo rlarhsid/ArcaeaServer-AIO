@@ -501,9 +501,9 @@ class UserCharacter(Character):
     def update_insight_state(self) -> None:
         if self.level.level == self.level.max_level:
             if self.user.insight_state == 3:
-                self.user.select_user_one_column("insight_state", 5, int)
+                self.user.update_user_one_column("insight_state", 5)
             elif self.user.insight_state == 4:
-                self.user.select_user_one_column("insight_state", 6, int)
+                self.user.update_user_one_column("insight_state", 6)
 
 
 class UserCharacterList:
