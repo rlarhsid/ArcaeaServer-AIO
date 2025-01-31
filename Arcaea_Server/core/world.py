@@ -56,6 +56,10 @@ class MapParser:
         `c` - 数据库连接
         """
         return [UserMap(c, map_id, user) for map_id in MapParser.map_id_path.keys()]
+    
+    @staticmethod
+    def get_world_chap(c, user, chap) -> list:
+        return [UserMap(c, map_id, user) for map_id in MapParser.map_id_path.keys() if MapParser.get_world_info(map_id).get("chapter", -1) == chap]
 
     @staticmethod
     @lru_cache(maxsize=128)
@@ -678,6 +682,7 @@ class WorldSkillMixin:
             "skill_hikari_vanessa": self._skill_hikari_vanessa,
             "skill_mithra": self._skill_mithra,
             "skill_chinatsu": self._skill_chinatsu,
+            "skill_salt": self._skill_salt
         }
         if (
             self.user_play.beyond_gauge == 0
@@ -883,6 +888,19 @@ class WorldSkillMixin:
         if self.user_play.invasion_flag:
             self.character_bonus_progress_normalized = self.progress_normalized
             self.user.current_map.reclimb(self.final_progress, self.user_play)
+
+    def _skill_salt(self) -> None:
+        cur_chapter = self.user.current_map.chapter
+        chapter_maps = MapParser.get_world_chap(self.c, self.user, cur_chapter)
+
+        total = len(chapter_maps)
+        completed = 0
+        for user_map in chapter_maps:
+            user_map.select()
+            if user_map.curr_position >= user_map.steps[-1].position:
+                completed += 1
+
+        self.character_bonus_progress_normalized = completed / total * 10
 
 
 class BaseWorldPlay(WorldSkillMixin):
