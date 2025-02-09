@@ -2,6 +2,7 @@ from .config_manager import Config
 from .constant import Constant
 from .error import ArcError, InputError, ItemNotEnough, NoData
 from .item import CollectionItemMixin, ItemCore
+from .sql import UserKVTable
 
 
 class Level:
@@ -55,6 +56,7 @@ class Skill:
 class CharacterValue:
     def __init__(self, start: float = 0, mid: float = 0, end: float = 0) -> None:
         self.set_parameter(start, mid, end)
+        self.addition: float = 0
 
     @staticmethod
     def _calc_char_value_20_math(level: int, value_1: float, value_20: float) -> float:
@@ -87,9 +89,15 @@ class CharacterValue:
 
     def get_value(self, level: Level):
         if level.min_level <= level.level <= level.mid_level:
-            return self._calc_char_value_20_math(level.level, self.start, self.mid)
+            return (
+                self._calc_char_value_20_math(level.level, self.start, self.mid)
+                + self.addition
+            )
         if level.mid_level < level.level <= level.max_level:
-            return self._calc_char_value_30(level.level, self.mid, self.end)
+            return (
+                self._calc_char_value_30(level.level, self.mid, self.end)
+                + self.addition
+            )
         return 0
 
 
@@ -257,6 +265,8 @@ class UserCharacter(Character):
 
         self.skill_flag: bool = None
 
+        self.fatalis_is_limited: bool = False
+
     @property
     def skill_id_displayed(self) -> str:
         """对外显示的技能id"""
@@ -325,6 +335,22 @@ class UserCharacter(Character):
         if self.character_id in (21, 46):
             self.voice = [0, 1, 2, 3, 100, 1000, 1001]
 
+        if self.character_id == 55:
+            # fatalis 提升数值
+            # prog & overdrive += 世界模式中完成的所有非无限地图的台阶数之和 / 30
+            if Config.CHARACTER_FULL_UNLOCK:
+                addition = Constant.FATALIS_MAX_VALUE
+                self.fatalis_is_limited = True
+            else:
+                kvd = UserKVTable(self.c, self.user.user_id, "world")
+                steps = kvd["total_step_count"] or 0
+                addition = steps / 30
+                if addition >= Constant.FATALIS_MAX_VALUE:
+                    addition = Constant.FATALIS_MAX_VALUE
+                    self.fatalis_is_limited = True
+            self.prog.addition = addition
+            self.overdrive.addition = addition
+
         self.select_character_core()
         if self.character_id == 72:
             self.update_insight_state()
@@ -354,7 +380,7 @@ class UserCharacter(Character):
         if self.voice:
             r["voice"] = self.voice
         if self.character_id == 55:
-            r["fatalis_is_limited"] = False  # emmmmmmm
+            r["fatalis_is_limited"] = self.fatalis_is_limited
         if self.character_id in [1, 6, 7, 17, 18, 24, 32, 35, 52]:
             r["base_character_id"] = 1
 

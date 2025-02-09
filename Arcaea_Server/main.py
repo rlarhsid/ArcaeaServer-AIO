@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import json
 import os
 from importlib import import_module
 
@@ -8,6 +9,13 @@ from core.config_manager import Config, ConfigManager
 if os.path.exists("config.py") or os.path.exists("config"):
     # 导入用户自定义配置
     ConfigManager.load(import_module("config").Config)
+else:
+    # Allow importing the config from a custom path given through an environment variable
+    configPath = os.environ.get("ARCAEA_JSON_CONFIG_PATH")
+    if os.path.exists(configPath):
+        with open(configPath, "r") as file:
+            ConfigManager.load_dict(json.load(file))
+
 
 if Config.DEPLOY_MODE == "gevent":
     # 异步
@@ -205,7 +213,9 @@ def main():
                 "stream": "ext://flask.logging.wsgi_errors_stream",
                 "formatter": "default",
             },
-            "error_file": generate_log_file_dict("ERROR", "./log/error.log"),
+            "error_file": generate_log_file_dict(
+                "ERROR", f"{Config.LOG_FOLDER_PATH}/error.log"
+            ),
         },
         "formatters": {
             "default": {
@@ -216,12 +226,12 @@ def main():
     if Config.ALLOW_INFO_LOG:
         log_dict["root"]["handlers"].append("info_file")
         log_dict["handlers"]["info_file"] = generate_log_file_dict(
-            "INFO", "./log/info.log"
+            "INFO", f"{Config.LOG_FOLDER_PATH}/info.log"
         )
     if Config.ALLOW_WARNING_LOG:
         log_dict["root"]["handlers"].append("warning_file")
         log_dict["handlers"]["warning_file"] = generate_log_file_dict(
-            "WARNING", "./log/warning.log"
+            "WARNING", f"{Config.LOG_FOLDER_PATH}/warning.log"
         )
 
     dictConfig(log_dict)

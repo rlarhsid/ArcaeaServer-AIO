@@ -19,7 +19,7 @@ class Config:
 
     BUNDLE_STRICT_MODE = True
 
-    SET_LINKPLAY_SERVER_AS_SUB_PROCESS = False
+    SET_LINKPLAY_SERVER_AS_SUB_PROCESS = True
 
     LINKPLAY_HOST = "0.0.0.0"
     LINKPLAY_UDP_PORT = 10900
@@ -31,7 +31,7 @@ class Config:
     SSL_CERT = ""
     SSL_KEY = ""
 
-    IS_APRILFOOLS = False
+    IS_APRILFOOLS = True
 
     WORLD_RANK_MAX = 200
 
@@ -72,13 +72,13 @@ class Config:
 
     UPDATE_WITH_NEW_CHARACTER_DATA = True
 
-    CHARACTER_FULL_UNLOCK = False
-    WORLD_SONG_FULL_UNLOCK = False
-    WORLD_SCENERY_FULL_UNLOCK = False
+    CHARACTER_FULL_UNLOCK = True
+    WORLD_SONG_FULL_UNLOCK = True
+    WORLD_SCENERY_FULL_UNLOCK = True
 
     SAVE_FULL_UNLOCK = False
 
-    ALLOW_SELF_ACCOUNT_DELETE = True
+    ALLOW_SELF_ACCOUNT_DELETE = False
 
     # ------------------------------------------
 
@@ -91,7 +91,9 @@ class Config:
 
     MAX_FRIEND_COUNT = 50
 
+    LOG_FOLDER_PATH = "./log"
     WORLD_MAP_FOLDER_PATH = "./database/map/"
+    WORLD_MAP_LEPHON_NELL_FOLDER_PATH = "./database/map_lephon_nell"
     SONG_FILE_FOLDER_PATH = "./database/songs/"
     SONGLIST_FILE_PATH = "./database/songs/songlist"
     CONTENT_BUNDLE_FOLDER_PATH = "./database/bundle/"
@@ -110,10 +112,13 @@ class Config:
 
 
 class ConfigManager:
-
     @staticmethod
     def load(config) -> None:
-        for k, v in config.__dict__.items():
+        ConfigManager.load_dict(config.__dict__)
+
+    @staticmethod
+    def load_dict(config) -> None:
+        for k, v in config.items():
             if k.startswith("__") or k.endswith("__"):
                 continue
             if hasattr(Config, k):

@@ -629,3 +629,39 @@ class MemoryDatabase:
 @register
 def atexit():
     MemoryDatabase.conn.close()
+
+
+class UserKVTable:
+    """用户键值对表"""
+
+    def __init__(self, c=None, user_id: int = None, class_name: str = None) -> None:
+        self.c = c
+        self.user_id = user_id
+        self.class_name = class_name
+
+    def get(self, key: str, idx: int = 0):
+        """获取键值对"""
+        x = self.c.execute(
+            """select value from user_kvdata where user_id = ? and class = ? and key = ? and idx = ?""",
+            (self.user_id, self.class_name, key, idx),
+        ).fetchone()
+        return x[0] if x else None
+
+    def set(self, key: str, value, idx: int = 0) -> None:
+        """设置键值对"""
+        self.c.execute(
+            """insert or replace into user_kvdata values(?,?,?,?,?)""",
+            (self.user_id, self.class_name, key, idx, value),
+        )
+
+    def __getitem__(self, args):
+        if isinstance(args, tuple):
+            return self.get(*args)
+        else:
+            return self.get(args)
+
+    def __setitem__(self, args, value):
+        if isinstance(args, tuple):
+            self.set(args[0], value, args[1])
+        else:
+            self.set(args, value)

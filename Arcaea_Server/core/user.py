@@ -21,8 +21,8 @@ from .item import UserItemList
 from .limiter import ArcLimiter
 from .mission import UserMissionList
 from .score import Score
-from .sql import Query, Sql
-from .world import Map, UserMap, UserStamina
+from .sql import Query, Sql, UserKVTable
+from .world import Map, MapParser, UserMap, UserStamina
 
 
 def code_get_id(c, user_code: str) -> int:
@@ -853,6 +853,36 @@ class UserInfo(User):
             (x[0], self.user_id),
         )
         self.world_rank_score = x[0]
+
+    def update_user_world_complete_info(self) -> None:
+        """
+        更新用户的世界模式完成信息，包括两个部分
+
+        1. 每个章节的完成地图数量，为了 salt 技能
+        2. 全世界模式完成台阶数之和，为了 fatalis 技能
+        """
+        kvd = UserKVTable(self.c, self.user_id, "world")
+
+        for chapter_id, map_ids in MapParser.chapter_info_without_repeatable.items():
+            self.c.execute(
+                f"""select map_id, curr_position from user_world where user_id = ? and map_id in ({','.join(['?']*len(map_ids))})""",
+                (self.user_id, *map_ids),
+            )
+            x = self.c.fetchall()
+            n = 0
+            for map_id, curr_position in x:
+                step_count = MapParser.world_info[map_id]["step_count"]
+                if curr_position == step_count - 1:
+                    n += 1
+            kvd["chapter_complete_count", chapter_id] = n
+
+        self.c.execute(
+            """select sum(curr_position) + count(*) from user_world where user_id = ?""",
+            (self.user_id,),
+        )
+        x = self.c.fetchone()
+        if x is not None:
+            kvd["total_step_count"] = x[0] or 0
 
     def select_user_one_column(
         self, column_name: str, default_value=None, data_type=None

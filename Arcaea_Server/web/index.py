@@ -575,6 +575,8 @@ def change_character():
         "skill_tsumugi",
         "skill_nai",
         "skill_selene",
+        "skill_salt",
+        "skill_acid",
     ]
     return render_template("web/changechar.html", skill_ids=skill_ids)
 

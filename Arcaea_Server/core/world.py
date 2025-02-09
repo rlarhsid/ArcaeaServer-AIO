@@ -5,15 +5,22 @@ from random import randint
 from time import time
 
 from .character import Character, UserCharacter
+from .config_manager import Config
 from .constant import Constant
 from .error import InputError, MapLocked, NoData
 from .item import ItemFactory
+from .sql import UserKVTable
 
 
 class MapParser:
 
     map_id_path: "dict[str, str]" = {}
     map_lephon_nell_phases: "dict[int, str]" = {}
+
+    world_info: "dict[str, dict]" = {}  # 简要记录地图信息
+    chapter_info: "dict[int, list[str]]" = {}  # 章节包含的地图
+    # 章节包含的地图（不包含可重复地图）
+    chapter_info_without_repeatable: "dict[int, list[str]]" = {}
 
     def __init__(self) -> None:
         if not self.map_id_path:
@@ -26,15 +33,37 @@ class MapParser:
                     continue
 
                 path = os.path.join(root, file)
+                map_id = file[:-5]
                 self.map_id_path[file[:-5]] = path
+
+                map_data = self.get_world_info(map_id)
+                chapter = map_data.get("chapter", None)
+                if chapter is None:
+                    continue
+                self.chapter_info.setdefault(chapter, []).append(map_id)
+                is_repeatable = map_data.get("is_repeatable", False)
+                if not is_repeatable:
+                    self.chapter_info_without_repeatable.setdefault(chapter, []).append(
+                        map_id
+                    )
+                self.world_info[map_id] = {
+                    "chapter": chapter,
+                    "is_repeatable": is_repeatable,
+                    "is_beyond": map_data.get("is_beyond", False),
+                    "is_legacy": map_data.get("is_legacy", False),
+                    "step_count": len(map_data.get("steps", [])),
+                }
 
         for i in range(4):
             self.map_lephon_nell_phases[i] = os.path.join(
-                "./database/map_lephon_nell", f"{i+1}.json"
+                Config.WORLD_MAP_LEPHON_NELL_FOLDER_PATH, f"{i+1}.json"
             )
 
     def re_init(self) -> None:
         self.map_id_path.clear()
+        self.world_info.clear()
+        self.chapter_info.clear()
+        self.chapter_info_without_repeatable.clear()
         self.get_world_info.cache_clear()
         self.parse()
 
@@ -56,10 +85,6 @@ class MapParser:
         `c` - 数据库连接
         """
         return [UserMap(c, map_id, user) for map_id in MapParser.map_id_path.keys()]
-    
-    @staticmethod
-    def get_world_chap(c, user, chap) -> list:
-        return [UserMap(c, map_id, user) for map_id in MapParser.map_id_path.keys() if MapParser.get_world_info(map_id).get("chapter", -1) == chap]
 
     @staticmethod
     @lru_cache(maxsize=128)
@@ -398,12 +423,6 @@ class UserMap(Map):
             ]
 
         self.select_map_info()  # Update with overwrite_steps
-        x: "Step" = self.steps[self.curr_position]
-        if x.step_type:
-            if not self.lephon_final and (
-                "wall_nell" in x.step_type or "wall_impossible" in x.step_type
-            ):
-                self.lephon_active = True
 
     def change_user_current_map(self):
         """改变用户当前地图为此地图"""
@@ -449,6 +468,7 @@ class UserMap(Map):
         user_lephon_nell_state = self.user.lephon_nell_state
 
         # Handle lephon_nell specific logic
+        self.lephon_active = False
         if self.user.current_map.map_id == "lephon_nell":
             if user_lephon_nell_state == 0:
                 if cur_step.step_type and "wall_impossible" in cur_step.step_type:
@@ -472,12 +492,19 @@ class UserMap(Map):
             )
             self.select_map_info()
 
+            x: "Step" = self.steps[self.curr_position]
+            if x.step_type:
+                if not self.lephon_final and (
+                    "wall_nell" in x.step_type or "wall_impossible" in x.step_type
+                ):
+                    self.lephon_active = True
+
         self.prev_capture = self.curr_capture
         self.prev_position = self.curr_position
 
         if cur_step.step_type:
             if not self.lephon_final and self.lephon_active:
-                if user_play.nell_toggle:
+                if user_play.nell_toggle == True:
                     i = self.curr_position
                     j = self.curr_capture
                     remain_tiles = 4
@@ -495,6 +522,7 @@ class UserMap(Map):
                     else:
                         self.curr_position = i
                         self.curr_capture = j
+                    return
                 else:
                     step_value = 0
             if not self.lephon_final and "wall_impossible" in cur_step.step_type:
@@ -673,6 +701,14 @@ class UserStamina(Stamina):
 
 
 class WorldSkillMixin:
+    """
+    不可实例化
+
+    self.c = c
+    self.user = user
+    self.user_play = user_play
+    """
+
     def before_calculate(self) -> None:
         factory_dict = {
             "skill_vita": self._skill_vita,
@@ -682,7 +718,7 @@ class WorldSkillMixin:
             "skill_hikari_vanessa": self._skill_hikari_vanessa,
             "skill_mithra": self._skill_mithra,
             "skill_chinatsu": self._skill_chinatsu,
-            "skill_salt": self._skill_salt
+            "skill_salt": self._skill_salt,
         }
         if (
             self.user_play.beyond_gauge == 0
@@ -890,17 +926,24 @@ class WorldSkillMixin:
             self.user.current_map.reclimb(self.final_progress, self.user_play)
 
     def _skill_salt(self) -> None:
-        cur_chapter = self.user.current_map.chapter
-        chapter_maps = MapParser.get_world_chap(self.c, self.user, cur_chapter)
+        """
+        salt 技能，根据单个章节地图的完成情况额外获得最高 10 的世界模式进度
 
-        total = len(chapter_maps)
-        completed = 0
-        for user_map in chapter_maps:
-            user_map.select()
-            if user_map.curr_position >= user_map.steps[-1].position:
-                completed += 1
+        当前章节完成地图数 / 本章节总地图数（不含无限图）* 10
+        """
+        if Config.CHARACTER_FULL_UNLOCK:
+            self.character_bonus_progress_normalized = 10
+            return
 
-        self.character_bonus_progress_normalized = completed / total * 10
+        kvd = UserKVTable(self.c, self.user.user_id, "world")
+
+        chapter_id = self.user.current_map.chapter
+        count = kvd["chapter_complete_count", chapter_id] or 0
+        total = len(MapParser.chapter_info_without_repeatable[chapter_id])
+        if count > total:
+            count = total
+
+        self.character_bonus_progress_normalized = 10 * (count / total)
 
 
 class BaseWorldPlay(WorldSkillMixin):
@@ -1068,6 +1111,9 @@ class BaseWorldPlay(WorldSkillMixin):
             self.user.current_map.curr_position = 0
 
         self.user.current_map.update()
+
+        # 更新用户完成情况
+        self.user.update_user_world_complete_info()
 
     def update(self) -> None:
         """世界模式更新"""

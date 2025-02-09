@@ -283,6 +283,17 @@ status int,
 primary key(user_id, mission_id)
 );
 
+-- value 无类型
+create table if not exists user_kvdata(
+user_id int,
+class text,
+key text,
+idx int,
+value,
+primary key(user_id, class, key, idx)
+);
+
+
 create index if not exists best_score_1 on best_score (song_id, difficulty);
 
 PRAGMA journal_mode = WAL;

@@ -445,6 +445,7 @@ class UserPlay(UserScore):
         ):
             raise StaminaNotEnough("Stamina is not enough.")
 
+        fatalis_stamina_multiply = 1
         self.user.select_user_about_character()
         if not self.user.is_skill_sealed:
             self.user.character.select_character_info()
@@ -466,11 +467,7 @@ class UserPlay(UserScore):
                 self.invasion_flag = _flag
             elif self.user.character.skill_id_displayed == "skill_fatalis":
                 # 特殊判断hikari fatalis的双倍体力消耗
-                self.user.stamina.stamina -= (
-                    self.user.current_map.stamina_cost * self.stamina_multiply * 2
-                )
-                self.user.stamina.update()
-                return None
+                fatalis_stamina_multiply = 2
 
         self.clear_play_state()
         self.c.execute(
@@ -491,7 +488,9 @@ class UserPlay(UserScore):
         )
 
         self.user.stamina.stamina -= (
-            self.user.current_map.stamina_cost * self.stamina_multiply
+            self.user.current_map.stamina_cost
+            * self.stamina_multiply
+            * fatalis_stamina_multiply
         )
         self.user.stamina.update()
 
