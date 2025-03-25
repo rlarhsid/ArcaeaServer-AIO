@@ -85,6 +85,7 @@ class InitData:
         "Selene Sheryl",
         "Salt",
         "Acid",
+        "Hikari & Selene Sheryl (Fracture & MIR-203)",
     ]
 
     skill_id = [
@@ -173,6 +174,7 @@ class InitData:
         "skill_selene",
         "skill_salt",
         "skill_acid",
+        "skill_hikari_selene",
     ]
 
     skill_id_uncap = [
@@ -261,6 +263,7 @@ class InitData:
         "",
         "",
         "",
+        "",
     ]
 
     skill_unlock_level = [
@@ -321,6 +324,7 @@ class InitData:
         0,
         0,
         8,
+        0,
         0,
         0,
         0,
@@ -437,6 +441,7 @@ class InitData:
         45,
         20,
         43,
+        50,
     ]
 
     prog1 = [
@@ -525,6 +530,7 @@ class InitData:
         35,
         23,
         24,
+        46,
     ]
 
     overdrive1 = [
@@ -613,6 +619,7 @@ class InitData:
         56,
         20,
         25,
+        46,
     ]
 
     frag20 = [
@@ -701,6 +708,7 @@ class InitData:
         66,
         44,
         79,
+        50,
     ]
 
     prog20 = [
@@ -789,6 +797,7 @@ class InitData:
         65,
         50,
         43,
+        84,
     ]
 
     overdrive20 = [
@@ -877,6 +886,7 @@ class InitData:
         81,
         44,
         46,
+        84,
     ]
 
     frag30 = [
@@ -965,6 +975,7 @@ class InitData:
         76,
         44,
         89,
+        50,
     ]
 
     prog30 = [
@@ -1053,6 +1064,7 @@ class InitData:
         75,
         50,
         53,
+        84,
     ]
 
     overdrive30 = [
@@ -1141,6 +1153,7 @@ class InitData:
         91,
         44,
         56,
+        84,
     ]
 
     char_type = [
@@ -1228,6 +1241,7 @@ class InitData:
         0,
         2,
         0,
+        2,
         2,
     ]
 

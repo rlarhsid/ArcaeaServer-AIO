@@ -719,6 +719,7 @@ class WorldSkillMixin:
             "skill_mithra": self._skill_mithra,
             "skill_chinatsu": self._skill_chinatsu,
             "skill_salt": self._skill_salt,
+            "skill_hikari_selene": self._skill_hikari_selene,
         }
         if (
             self.user_play.beyond_gauge == 0
@@ -943,7 +944,19 @@ class WorldSkillMixin:
         if count > total:
             count = total
 
-        self.character_bonus_progress_normalized = 10 * (count / total)
+        radio = count / total if total else 1
+
+        self.character_bonus_progress_normalized = 10 * radio
+
+    def _skill_hikari_selene(self) -> None:
+        """
+        hikari_selene 技能，曲目结算时每满一格收集条增加 2 step 与 2 overdrive
+        """
+        self.over_skill_increase = 0
+        self.prog_skill_increase = 0
+        if 0 < self.user_play.health <= 100:
+            self.over_skill_increase = int(self.user_play.health / 10) * 2
+            self.prog_skill_increase = int(self.user_play.health / 10) * 2
 
 
 class BaseWorldPlay(WorldSkillMixin):

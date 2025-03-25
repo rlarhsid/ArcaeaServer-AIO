@@ -12,7 +12,7 @@ if os.path.exists("config.py") or os.path.exists("config"):
 else:
     # Allow importing the config from a custom path given through an environment variable
     configPath = os.environ.get("ARCAEA_JSON_CONFIG_PATH")
-    if os.path.exists(configPath):
+    if configPath and os.path.exists(configPath):
         with open(configPath, "r") as file:
             ConfigManager.load_dict(json.load(file))
 

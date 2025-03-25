@@ -1,3 +1,4 @@
+# Fixed the config file a bit, trying to replicate the original server experience.
 class Config:
     """
     Default config
@@ -12,7 +13,7 @@ class Config:
 
     SONG_FILE_HASH_PRE_CALCULATE = True
 
-    GAME_API_PREFIX = "/coldwind/35"  # 6.0.0 '/fallingleaves/34'  # str | list[str]
+    GAME_API_PREFIX = "/coldwind/35"  # ~ 6.2.x? I guess.
     OLD_GAME_API_PREFIX = []  # str | list[str]
 
     ALLOW_APPVERSION = []  # list[str]
@@ -31,7 +32,7 @@ class Config:
     SSL_CERT = ""
     SSL_KEY = ""
 
-    IS_APRILFOOLS = True
+    IS_APRILFOOLS = False
 
     WORLD_RANK_MAX = 200
 
@@ -63,7 +64,7 @@ class Config:
     ALLOW_LOGIN_SAME_DEVICE = False
     ALLOW_BAN_MULTIDEVICE_USER_AUTO = True
 
-    ALLOW_SCORE_WITH_NO_SONG = True
+    ALLOW_SCORE_WITH_NO_SONG = False
 
     ALLOW_INFO_LOG = False
     ALLOW_WARNING_LOG = False
@@ -72,13 +73,13 @@ class Config:
 
     UPDATE_WITH_NEW_CHARACTER_DATA = True
 
-    CHARACTER_FULL_UNLOCK = True
-    WORLD_SONG_FULL_UNLOCK = True
-    WORLD_SCENERY_FULL_UNLOCK = True
+    CHARACTER_FULL_UNLOCK = False
+    WORLD_SONG_FULL_UNLOCK = False
+    WORLD_SCENERY_FULL_UNLOCK = False
 
     SAVE_FULL_UNLOCK = False
 
-    ALLOW_SELF_ACCOUNT_DELETE = False
+    ALLOW_SELF_ACCOUNT_DELETE = True
 
     # ------------------------------------------
 
