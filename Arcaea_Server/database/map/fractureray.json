@@ -183,7 +183,9 @@
       "position": 12,
       "__v": 0,
       "capture": 25,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -215,7 +217,9 @@
       "position": 15,
       "__v": 0,
       "capture": 40,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -247,7 +251,9 @@
       "position": 18,
       "__v": 0,
       "capture": 55,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -267,7 +273,9 @@
       "capture": 65,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"],
+      "step_type": [
+        "randomsong"
+      ],
       "items": [
         {
           "type": "core",
@@ -280,7 +288,9 @@
       "position": 21,
       "__v": 0,
       "capture": 70,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {

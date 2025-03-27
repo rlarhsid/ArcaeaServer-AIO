@@ -185,7 +185,9 @@
       "position": 5,
       "__v": 0,
       "capture": 11,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -254,7 +256,9 @@
       "position": 15,
       "__v": 0,
       "capture": 12,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -323,7 +327,9 @@
       "position": 25,
       "__v": 0,
       "capture": 13,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -385,7 +391,9 @@
       "position": 35,
       "__v": 0,
       "capture": 14,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -454,7 +462,9 @@
       "position": 45,
       "__v": 0,
       "capture": 15,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -523,7 +533,9 @@
       "position": 55,
       "__v": 0,
       "capture": 16,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {

@@ -1176,7 +1176,9 @@
       "position": 130,
       "__v": 0,
       "capture": 25,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 4
     },
     {

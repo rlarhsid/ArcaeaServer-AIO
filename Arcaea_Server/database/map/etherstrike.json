@@ -251,7 +251,9 @@
       "position": 15,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -260,7 +262,9 @@
       "capture": 9,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 17,
@@ -268,7 +272,9 @@
       "capture": 8,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 18,
@@ -276,7 +282,9 @@
       "capture": 7,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 19,
@@ -284,7 +292,9 @@
       "capture": 6,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 20,
@@ -292,7 +302,9 @@
       "capture": 5,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 21,
@@ -300,7 +312,9 @@
       "capture": 4,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 22,
@@ -308,7 +322,9 @@
       "capture": 3,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 23,
@@ -316,7 +332,9 @@
       "capture": 2,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 24,
@@ -324,7 +342,9 @@
       "capture": 1,
       "restrict_id": "rei",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 25,

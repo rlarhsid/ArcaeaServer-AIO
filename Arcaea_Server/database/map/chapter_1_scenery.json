@@ -291,7 +291,9 @@
     {
       "position": 45,
       "plus_stamina_value": 4,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "capture": 14
     },
     {
@@ -300,7 +302,9 @@
     },
     {
       "position": 47,
-      "step_type": ["randomsong"],
+      "step_type": [
+        "randomsong"
+      ],
       "restrict_type": "song_id",
       "restrict_ids": [
         "kanagawa",
@@ -312,7 +316,9 @@
     },
     {
       "position": 48,
-      "step_type": ["randomsong"],
+      "step_type": [
+        "randomsong"
+      ],
       "restrict_type": "song_id",
       "restrict_ids": [
         "kanagawa",

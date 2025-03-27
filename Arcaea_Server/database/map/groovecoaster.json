@@ -392,7 +392,9 @@
       "capture": 15,
       "restrict_id": "groovecoaster",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 43,
@@ -400,7 +402,9 @@
       "capture": 15,
       "restrict_id": "groovecoaster",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 44,
@@ -408,7 +412,9 @@
       "capture": 15,
       "restrict_id": "groovecoaster",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 45,

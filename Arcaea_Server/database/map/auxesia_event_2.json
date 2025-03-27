@@ -722,7 +722,9 @@
       "position": 16,
       "__v": 0,
       "capture": 20,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -840,7 +842,9 @@
       "position": 32,
       "__v": 0,
       "capture": 20,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -958,7 +962,9 @@
       "position": 48,
       "__v": 0,
       "capture": 20,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -1076,7 +1082,9 @@
       "position": 64,
       "__v": 0,
       "capture": 20,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -1317,7 +1325,9 @@
       "position": 96,
       "__v": 0,
       "capture": 20,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -1435,7 +1445,9 @@
       "position": 112,
       "__v": 0,
       "capture": 72,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2,
       "items": [
         {
@@ -1459,7 +1471,9 @@
       "position": 114,
       "__v": 0,
       "capture": 72,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -1484,7 +1498,9 @@
       "position": 117,
       "__v": 0,
       "capture": 6,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1502,7 +1518,9 @@
       "position": 119,
       "__v": 0,
       "capture": 7,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 120,
@@ -1543,14 +1561,18 @@
       "position": 124,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 125,
       "__v": 0,
       "capture": 11,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1568,7 +1590,9 @@
       "position": 127,
       "__v": 0,
       "capture": 11,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 128,
@@ -1603,7 +1627,9 @@
       "position": 131,
       "__v": 0,
       "capture": 13,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1627,14 +1653,18 @@
       "position": 134,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 135,
       "__v": 0,
       "capture": 6,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 136,
@@ -1669,7 +1699,9 @@
       "position": 139,
       "__v": 0,
       "capture": 6,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1687,7 +1719,9 @@
       "position": 141,
       "__v": 0,
       "capture": 7,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 142,
@@ -1710,7 +1744,9 @@
       "position": 144,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -1735,7 +1771,9 @@
       "position": 147,
       "__v": 0,
       "capture": 10,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1753,7 +1791,9 @@
       "position": 149,
       "__v": 0,
       "capture": 11,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 150,
@@ -1794,14 +1834,18 @@
       "position": 154,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 155,
       "__v": 0,
       "capture": 6,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1819,7 +1863,9 @@
       "position": 157,
       "__v": 0,
       "capture": 5,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 158,
@@ -1854,7 +1900,9 @@
       "position": 161,
       "__v": 0,
       "capture": 7,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1878,14 +1926,18 @@
       "position": 164,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 165,
       "__v": 0,
       "capture": 12,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 166,
@@ -1920,7 +1972,9 @@
       "position": 169,
       "__v": 0,
       "capture": 11,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -1938,7 +1992,9 @@
       "position": 171,
       "__v": 0,
       "capture": 12,
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 172,
@@ -1961,7 +2017,9 @@
       "position": 174,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {

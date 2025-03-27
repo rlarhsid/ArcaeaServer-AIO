@@ -151,7 +151,9 @@
     {
       "position": 15,
       "plus_stamina_value": 4,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "capture": 1
     },
     {

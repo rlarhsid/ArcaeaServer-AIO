@@ -97,7 +97,10 @@
       "position": 14,
       "capture": 12,
       "restrict_type": "song_id",
-      "restrict_ids": ["epitaxy", "dualdoom"]
+      "restrict_ids": [
+        "epitaxy",
+        "dualdoom"
+      ]
     },
     {
       "position": 15,

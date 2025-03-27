@@ -242,7 +242,9 @@
       "capture": 10,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 5,
@@ -311,7 +313,9 @@
       "capture": 20,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 15,
@@ -387,7 +391,9 @@
       "capture": 30,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 25,
@@ -456,7 +462,9 @@
       "capture": 40,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 35,
@@ -532,7 +540,9 @@
       "capture": 50,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 45,
@@ -607,7 +617,9 @@
       "capture": 60,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 55,
@@ -689,7 +701,9 @@
       "capture": 70,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 65,
@@ -757,7 +771,9 @@
       "capture": 80,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 75,

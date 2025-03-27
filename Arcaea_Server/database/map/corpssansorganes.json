@@ -311,21 +311,27 @@
       "position": 32,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 33,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 34,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -344,14 +350,18 @@
       "position": 36,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 37,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -370,14 +380,18 @@
       "position": 39,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
       "position": 40,
       "__v": 0,
       "capture": 105,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {

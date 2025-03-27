@@ -158,7 +158,9 @@
       "capture": 10,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 4,
@@ -176,7 +178,9 @@
       "position": 5,
       "__v": 0,
       "capture": 10,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -188,7 +192,9 @@
       "position": 7,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -230,7 +236,9 @@
       "capture": 10,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 14,
@@ -248,7 +256,9 @@
       "position": 15,
       "__v": 0,
       "capture": 10,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -260,7 +270,9 @@
       "position": 17,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -302,7 +314,9 @@
       "capture": 10,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 24,
@@ -320,7 +334,9 @@
       "position": 25,
       "__v": 0,
       "capture": 10,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -332,7 +348,9 @@
       "position": 27,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
@@ -374,7 +392,9 @@
       "capture": 10,
       "restrict_id": "base",
       "restrict_type": "pack_id",
-      "step_type": ["randomsong"]
+      "step_type": [
+        "randomsong"
+      ]
     },
     {
       "position": 34,
@@ -392,7 +412,9 @@
       "position": 35,
       "__v": 0,
       "capture": 10,
-      "step_type": ["speedlimit"],
+      "step_type": [
+        "speedlimit"
+      ],
       "speed_limit_value": 20
     },
     {
@@ -404,7 +426,9 @@
       "position": 37,
       "__v": 0,
       "capture": 10,
-      "step_type": ["plusstamina"],
+      "step_type": [
+        "plusstamina"
+      ],
       "plus_stamina_value": 2
     },
     {
