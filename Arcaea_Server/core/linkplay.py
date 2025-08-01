@@ -23,6 +23,8 @@ def get_song_unlock(client_song_map: "dict[str, list]") -> bytes:
             if not v[i]:
                 continue
             index = int(k) * 5 + i
+            if index >= Constant.LINKPLAY_UNLOCK_LENGTH * 8:
+                continue
             user_song_unlock[index // 8] |= 1 << (index % 8)
 
     return bytes(user_song_unlock)

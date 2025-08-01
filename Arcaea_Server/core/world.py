@@ -14,13 +14,13 @@ from .sql import UserKVTable
 
 class MapParser:
 
-    map_id_path: "dict[str, str]" = {}
+    map_id_path: 'dict[str, str]' = {}
     map_lephon_nell_phases: "dict[int, str]" = {}
 
-    world_info: "dict[str, dict]" = {}  # 简要记录地图信息
-    chapter_info: "dict[int, list[str]]" = {}  # 章节包含的地图
+    world_info: 'dict[str, dict]' = {}  # 简要记录地图信息
+    chapter_info: 'dict[int, list[str]]' = {}  # 章节包含的地图
     # 章节包含的地图（不包含可重复地图）
-    chapter_info_without_repeatable: "dict[int, list[str]]" = {}
+    chapter_info_without_repeatable: 'dict[int, list[str]]' = {}
 
     def __init__(self) -> None:
         if not self.map_id_path:
@@ -37,21 +37,20 @@ class MapParser:
                 self.map_id_path[file[:-5]] = path
 
                 map_data = self.get_world_info(map_id)
-                chapter = map_data.get("chapter", None)
+                chapter = map_data.get('chapter', None)
                 if chapter is None:
                     continue
                 self.chapter_info.setdefault(chapter, []).append(map_id)
-                is_repeatable = map_data.get("is_repeatable", False)
+                is_repeatable = map_data.get('is_repeatable', False)
                 if not is_repeatable:
-                    self.chapter_info_without_repeatable.setdefault(chapter, []).append(
-                        map_id
-                    )
+                    self.chapter_info_without_repeatable.setdefault(
+                        chapter, []).append(map_id)
                 self.world_info[map_id] = {
-                    "chapter": chapter,
-                    "is_repeatable": is_repeatable,
-                    "is_beyond": map_data.get("is_beyond", False),
-                    "is_legacy": map_data.get("is_legacy", False),
-                    "step_count": len(map_data.get("steps", [])),
+                    'chapter': chapter,
+                    'is_repeatable': is_repeatable,
+                    'is_beyond': map_data.get('is_beyond', False),
+                    'is_legacy': map_data.get('is_legacy', False),
+                    'step_count': len(map_data.get('steps', [])),
                 }
 
         for i in range(4):
@@ -85,7 +84,7 @@ class MapParser:
         `c` - 数据库连接
         """
         return [UserMap(c, map_id, user) for map_id in MapParser.map_id_path.keys()]
-
+    
     @staticmethod
     @lru_cache(maxsize=128)
     def get_lephon_nell_phase(phase: int) -> list:
@@ -94,7 +93,6 @@ class MapParser:
             steps = load(f)
 
         return steps["steps"]
-
 
 class Step:
     """台阶类"""
@@ -701,13 +699,13 @@ class UserStamina(Stamina):
 
 
 class WorldSkillMixin:
-    """
-    不可实例化
+    '''
+        不可实例化
 
-    self.c = c
-    self.user = user
-    self.user_play = user_play
-    """
+        self.c = c
+        self.user = user
+        self.user_play = user_play
+    '''
 
     def before_calculate(self) -> None:
         factory_dict = {
@@ -719,7 +717,8 @@ class WorldSkillMixin:
             "skill_mithra": self._skill_mithra,
             "skill_chinatsu": self._skill_chinatsu,
             "skill_salt": self._skill_salt,
-            "skill_hikari_selene": self._skill_hikari_selene,
+            'skill_hikari_selene': self._skill_hikari_selene,
+            'skill_nami_sui': self._skill_nami_sui,
         }
         if (
             self.user_play.beyond_gauge == 0
@@ -927,19 +926,19 @@ class WorldSkillMixin:
             self.user.current_map.reclimb(self.final_progress, self.user_play)
 
     def _skill_salt(self) -> None:
-        """
+        '''
         salt 技能，根据单个章节地图的完成情况额外获得最高 10 的世界模式进度
 
         当前章节完成地图数 / 本章节总地图数（不含无限图）* 10
-        """
+        '''
         if Config.CHARACTER_FULL_UNLOCK:
             self.character_bonus_progress_normalized = 10
             return
 
-        kvd = UserKVTable(self.c, self.user.user_id, "world")
+        kvd = UserKVTable(self.c, self.user.user_id, 'world')
 
         chapter_id = self.user.current_map.chapter
-        count = kvd["chapter_complete_count", chapter_id] or 0
+        count = kvd['chapter_complete_count', chapter_id] or 0
         total = len(MapParser.chapter_info_without_repeatable[chapter_id])
         if count > total:
             count = total
@@ -949,14 +948,23 @@ class WorldSkillMixin:
         self.character_bonus_progress_normalized = 10 * radio
 
     def _skill_hikari_selene(self) -> None:
-        """
+        '''
         hikari_selene 技能，曲目结算时每满一格收集条增加 2 step 与 2 overdrive
-        """
+        '''
         self.over_skill_increase = 0
         self.prog_skill_increase = 0
         if 0 < self.user_play.health <= 100:
             self.over_skill_increase = int(self.user_play.health / 10) * 2
             self.prog_skill_increase = int(self.user_play.health / 10) * 2
+
+    def _skill_nami_sui(self) -> None:
+        '''
+        nami & sui 技能，根据纯粹音符数与 FEVER 等级提高世界模式进度
+        '''
+        if self.user_play.fever_bonus is None:
+            return
+
+        self.character_bonus_progress_normalized = self.user_play.fever_bonus / 1000
 
 
 class BaseWorldPlay(WorldSkillMixin):
@@ -1157,9 +1165,7 @@ class WorldPlay(BaseWorldPlay):
         if self.character_bonus_progress_normalized is not None:
             r["character_bonus_progress"] = self.character_bonus_progress_normalized
             # 不懂为什么两个玩意一样
-            r["character_bonus_progress_normalized"] = (
-                self.character_bonus_progress_normalized
-            )
+            r['character_bonus_progress_normalized'] = self.character_bonus_progress_normalized
 
         if self.prog_skill_increase is not None:
             r["char_stats"]["prog_skill_increase"] = self.prog_skill_increase
