@@ -1,5 +1,0 @@
-LOG_FILE_PATH=/your/path/to/linklog.log
-SONGLIST_PATH=/path/to/songlist
-JACKET_PATH=/your/path/to/jackets/ #recommend to be Arcaea's bundle data folder, this script fetches images which are inside dl_'songname' or 'songname'.
-MESSAGE_COLOR=FFFFFF #Use HEX code
-DISCORD_WEBHOOK_URL=webhook.com #Change this to your Discord Webhook URL

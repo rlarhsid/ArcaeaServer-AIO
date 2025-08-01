@@ -1,47 +1,47 @@
-{% extends 'base.html' %} {% block header %}
+{% extends 'base.html' %}
+{% block header %}
 <h1>{% block title %}Change the items{% endblock %}</h1>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <form action="/web/changeitem" method="post">
-  <div class="title">Add the item</div>
-  <label for="item_id">ID of the item</label>
-  <input name="item_id" id="item_id" required />
-  <label for="type">Type</label>
-  <div>
-    <select name="type">
-      <option value="single" selected>Single</option>
-      <option value="pack">Pack</option>
-      <option value="world_song">World song</option>
-      <option value="character">Character</option>
-    </select>
-  </div>
-  <br />
-  <div>
-    <label for="is_available">是否可用 Is available:</label>
+    <div class="title">Add the item</div>
+    <label for="item_id">ID of the item</label>
+    <input name="item_id" id="item_id" required>
+    <label for="type">Type</label>
+    <div>
+        <select name="type">
+            <option value='single' selected>Single</option>
+            <option value='pack'>Pack</option>
+            <option value='world_song'>World song</option>
+            <option value='character'>Character</option>
+        </select>
+    </div>
     <br />
+    <div><label for="is_available">是否可用 Is available:</label>
+        <br />
+        <br />
+        <label><input type="radio" name="is_available" checked value=1>True</label>
+        <br />
+        <label><input type="radio" name="is_available" value=0>False</label>
+    </div>
     <br />
-    <label
-      ><input type="radio" name="is_available" checked value="1" />True</label
-    >
-    <br />
-    <label><input type="radio" name="is_available" value="0" />False</label>
-  </div>
-  <br />
-  <input type="submit" value="Add" />
+    <input type="submit" value="Add">
 </form>
 <form action="/web/changeitem/delete" method="post">
-  <div class="title">Delete the item</div>
-  <label for="item_id">ID of the item</label>
-  <input name="item_id" id="item_id" required />
-  <label for="type">Type</label>
-  <div>
-    <select name="type">
-      <option value="single" selected>Single</option>
-      <option value="pack">Pack</option>
-      <option value="world_song">World song</option>
-      <option value="character">Character</option>
-    </select>
-  </div>
-  <br />
-  <input type="submit" value="Delete" />
+    <div class="title">Delete the item</div>
+    <label for="item_id">ID of the item</label>
+    <input name="item_id" id="item_id" required>
+    <label for="type">Type</label>
+    <div>
+        <select name="type">
+            <option value='single' selected>Single</option>
+            <option value='pack'>Pack</option>
+            <option value='world_song'>World song</option>
+            <option value='character'>Character</option>
+        </select>
+    </div>
+    <br />
+    <input type="submit" value="Delete">
 </form>
 {% endblock %}

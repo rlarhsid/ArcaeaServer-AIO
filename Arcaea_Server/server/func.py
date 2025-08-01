@@ -10,12 +10,11 @@ from core.error import ArcError, LowVersion, NoAccess
 has_arc_hash = False
 try:
     from core.arc_crypto import ArcHashChecker  # type: ignore
-
     has_arc_hash = True
 except ModuleNotFoundError:
     pass
 
-default_error = ArcError("Unknown Error", status=500)
+default_error = ArcError('Unknown Error', status=500)
 
 
 def error_return(e: ArcError = default_error):  # 错误返回
@@ -73,7 +72,7 @@ def error_return(e: ArcError = default_error):  # 错误返回
     # 其它 发生未知错误
     r = {"success": False, "error_code": e.error_code}
     if e.extra_data:
-        r["extra"] = e.extra_data
+        r['extra'] = e.extra_data
 
     return jsonify(r), e.status
 
@@ -81,13 +80,12 @@ def error_return(e: ArcError = default_error):  # 错误返回
 def success_return(value=None):
     r = {"success": True}
     if value is not None:
-        r["value"] = value
+        r['value'] = value
     return jsonify(r)
 
 
 def arc_try(view):
-    """替代try/except，记录`ArcError`为warning"""
-
+    '''替代try/except，记录`ArcError`为warning'''
     @wraps(view)
     def wrapped_view(*args, **kwargs):
         try:
@@ -100,31 +98,22 @@ def arc_try(view):
                 current_app.logger.warning(format_exc())
             user = g.get("user", None)
             current_app.logger.warning(
-                f'{user.user_id if user is not None else ""} - {e.error_code}|{e.api_error_code}: {e}'
-            )
+                f'{user.user_id if user is not None else ""} - {e.error_code}|{e.api_error_code}: {e}')
             return error_return(e)
 
     return wrapped_view
 
 
 def header_check(request) -> ArcError:
-    """检查请求头是否合法"""
+    '''检查请求头是否合法'''
     headers = request.headers
     if Config.ALLOW_APPVERSION:  # 版本检查
-        if (
-            "AppVersion" not in headers
-            or headers["AppVersion"] not in Config.ALLOW_APPVERSION
-        ):
-            return LowVersion("Invalid app version", 5)
-    if (
-        request.method == "GET"
-        and "ContentBundle" in headers
-        and headers["ContentBundle"]
-        != BundleParser.max_bundle_version.get(headers.get("AppVersion", ""), "0.0.0")
-    ):
-        return LowVersion("Invalid content bundle version", 11)
+        if 'AppVersion' not in headers or headers['AppVersion'] not in Config.ALLOW_APPVERSION:
+            return LowVersion('Invalid app version', 5)
+    if request.method == 'GET' and 'ContentBundle' in headers and headers['ContentBundle'] != BundleParser.max_bundle_version.get(headers.get('AppVersion', ''), '0.0.0'):
+        return LowVersion('Invalid content bundle version', 11)
 
     if has_arc_hash and not ArcHashChecker(request).check():
-        return NoAccess("Invalid request")
+        return NoAccess('Invalid request')
 
     return None

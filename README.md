@@ -2,7 +2,6 @@
 All-in-one package repo. A fork of AriArcaeaServer, which is a fork of Lost's Arcaea-Server.
  
 # This repo has:
-- Database pre-installed (6.0 song support)
-- My previous tool installed (Linkplay bot)
-- Most of maps made & set (Some BYD, Breached Maps missing)
-- Keep in note! the "env" files needs to be renamed to ".env" to work properly. Using a Mac is a nightmare 🔥
+- Database pre-installed (6.6 complete support / 6.7 limited support)
+- Some useful tools installed (Linkplay Webhook, B30 Discord bot)
+- Most of maps added & set (Some BYD, Breached Maps missing)

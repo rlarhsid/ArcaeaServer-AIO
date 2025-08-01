@@ -1,3 +1,16 @@
+# Basic libraries needed for server usage.
+
 flask>=2.0.2
 cryptography>=35.0.0
 limits>=2.7.0
+
+# These are needed for additional features like WSGI deployment, Discord intergration and etc.
+
+gevent
+waitress
+flask-cors
+python-dotenv
+discord-webhook
+discord.py>=2.0.0
+requests>=2.31.0
+Pillow

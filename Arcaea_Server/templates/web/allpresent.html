@@ -1,41 +1,55 @@
-{% extends 'base.html' %} {% block header %}
+{% extends 'base.html' %}
+{% block header %}
 <h1>{% block title %}All presents{% endblock %}</h1>
-{% endblock %} {% block content %} {% if posts %}<br />
+{% endblock %}
+
+{% block content %}
+{% if posts %}<br />
 {% for present in posts %}
 
 <div class="char-present">
-  <span>Id: </span>
-  <span class="name">{{present['present_id']}}</span>
-  <br />
+    <span>Id: </span>
+    <span class="name">{{present['present_id']}}</span>
+    <br />
 
-  <span>Expire time: </span>
-  <span class="char-num">{{present['expire_ts']}}</span>
-  <br />
+    <span>Expire time: </span>
+    <span class="char-num">{{present['expire_ts']}}</span>
+    <br />
 
-  <span>Description: </span>
-  <span class="char-num">{{present['description']}}</span>
-  <br />
+    <span>Description: </span>
+    <span class="char-num">{{present['description']}}</span>
+    <br />
 
-  {% if present['items'] %}<br />
-  {% for x in present['items'] %}
-  <span>Item id: </span>
-  <span class="char-num">{{x['item_id']}}</span>
-  <br />
+    {% if present['items'] %}<br />
+    {% for x in present['items'] %}
+    <span>Item id: </span>
+    <span class="char-num">{{x['item_id']}}</span>
+    <br />
 
-  <span>Item type: </span>
-  <span class="char-num">{{x['type']}}</span>
-  <br />
+    <span>Item type: </span>
+    <span class="char-num">{{x['type']}}</span>
+    <br />
 
-  <span>Amount: </span>
-  <span class="char-num">{{x['amount']}}</span>
-  <br />
+    <span>Amount: </span>
+    <span class="char-num">{{x['amount']}}</span>
+    <br />
 
-  {% if not loop.last %}
-  <br />
-  {% endif %} {% endfor %} {% endif %}
+
+
+    {% if not loop.last %}
+    <br />
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
 </div>
 {% if not loop.last %}
 <br />
 <hr />
 <br />
-{% endif %} {% endfor %} {% endif %} {% endblock %}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% endblock %}

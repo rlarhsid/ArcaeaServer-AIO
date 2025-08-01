@@ -15,6 +15,9 @@ DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 
 def get_song_difficulty(difficulty):
+    """
+    Sets the song's difficulties.
+    """
     song_difficulties = {
         "0": "Past",
         "1": "Present",
@@ -26,18 +29,24 @@ def get_song_difficulty(difficulty):
 
 
 def load_songlist():
+    """
+    Loads the "songlist" file.
+    """
     if SONGLIST_PATH and os.path.exists(SONGLIST_PATH):
         try:
             with open(SONGLIST_PATH, "r", encoding="utf-8") as f:
                 return json.load(f)
         except json.JSONDecodeError:
-            print("Error: Invalid JSON in songlist!")
+            print("Error: Invalid songlist format!")
     else:
         print("Error: Songlist file not found! (Did you set the path correctly?)")
     return {"songs": []}
 
 
 def get_song_title(song_id):
+    """
+    Fetches the "en" title inside the "songlist" file.
+    """
     songlist = load_songlist()
     songs = songlist.get("songs", [])
     song_id = str(song_id)
@@ -49,6 +58,9 @@ def get_song_title(song_id):
 
 
 def get_song_jacket(song_id):
+    """
+    Loads the song's album image / jacket based on the "songlist" file. Loads 1080_base.jpg / base.jpg.
+    """
     if not JACKET_PATH or not os.path.exists(JACKET_PATH):
         print("Error: JACKET_PATH not found! (Did you set the path correctly?)")
         return None
@@ -88,6 +100,9 @@ def get_song_jacket(song_id):
 
 
 def send_discord_notification(title, description, color=MESSAGE_COLOR, song_id=None):
+    """
+    Sends the Discord message.
+    """
     webhook = DiscordWebhook(url=DISCORD_WEBHOOK_URL)
 
     embed = DiscordEmbed(title=title, description=description, color=color)
@@ -96,16 +111,21 @@ def send_discord_notification(title, description, color=MESSAGE_COLOR, song_id=N
         jacket_file = get_song_jacket(song_id)
         if jacket_file and os.path.exists(jacket_file):
             with open(jacket_file, "rb") as f:
-                webhook.add_file(file=f.read(), filename="1080_base.jpg")
+                webhook.add_file(file=f.read(), filename="jacket.jpg")
 
-            embed.set_image(url=f"attachment://1080_base.jpg")
+            embed.set_image(url=f"attachment://jacket.jpg")
 
     webhook.add_embed(embed)
 
     webhook.execute()
 
 
-def parse_log_line(line):
+def parse_log_line(
+    line,
+):
+    """
+    Funny ass silly code. If you want other messages to be captured too, add the line at here.
+    """
     patterns = {
         "create_room": r"Create room `(?P<room_code>\w+)` by player `(?P<player_name>\w+)`",
         "join_room": r"Player `(?P<player_name>\w+)` joins room `(?P<room_code>\w+)`",
@@ -135,7 +155,12 @@ def parse_log_line(line):
     return None
 
 
-def monitor_log_file(file_path):
+def monitor_log_file(
+    file_path,
+):
+    """
+    I know this is kinda stupid. Add the "elif" at here in order to send the message that you added above.
+    """
     with open(file_path, "r") as file:
         file.seek(0, os.SEEK_END)
         print(f"Monitoring {file_path}...")
@@ -217,7 +242,7 @@ def monitor_log_file(file_path):
                             f"**👀** As nobody remains, the room has been closed.\n"
                             f"**🏠 Room Code:** {log_info['room_code']}"
                         )
-                    else:
+                    else:  # Code for unexpected data. This won't format the log message; it'll just send without modifications.
                         title = "ℹ️ Linkplay Info"
                         description = line.strip()
 
@@ -226,7 +251,9 @@ def monitor_log_file(file_path):
                             title, description, song_id=log_info.get("song_id")
                         )
 
-            time.sleep(0.8)
+            time.sleep(
+                1  # This decides how often the message should be sent. Lower this number if you have enough RAM or system resources.
+            )
 
 
 if __name__ == "__main__":

@@ -26,14 +26,12 @@ class BaseNotification:
         raise NotImplementedError()
 
     def insert(self):
-        self.receiver.select_user_one_column("mp_notification_enabled", True, bool)
+        self.receiver.select_user_one_column('mp_notification_enabled', True, bool)
         if not self.receiver.mp_notification_enabled:
             return
 
         self.c_m.execute(
-            """select max(id) from notification where user_id = ?""",
-            (self.receiver.user_id,),
-        )
+            '''select max(id) from notification where user_id = ?''', (self.receiver.user_id,))
         x = self.c_m.fetchone()
         if x is None or x[0] is None:
             x = 0
@@ -41,25 +39,18 @@ class BaseNotification:
             x = x[0] + 1
 
         self.c_m.execute(
-            """insert into notification values (?, ?, ?, ?, ?, ?, ?)""",
-            (
-                self.receiver.user_id,
-                x,
-                self.notification_type,
-                self.content,
-                self.sender.user_id,
-                self.sender.name,
-                self.timestamp,
-            ),
+            '''insert into notification values (?, ?, ?, ?, ?, ?, ?)''',
+            (self.receiver.user_id, x, self.notification_type, self.content,
+             self.sender.user_id, self.sender.name, self.timestamp)
         )
 
 
 class RoomInviteNotification(BaseNotification):
 
-    notification_type = "room_inv"
+    notification_type = 'room_inv'
 
     @classmethod
-    def from_list(cls, l: list, user: User = None) -> "RoomInviteNotification":
+    def from_list(cls, l: list, user: User = None) -> 'RoomInviteNotification':
         x = cls()
         x.sender = User()
         x.sender.user_id = l[2]
@@ -70,9 +61,7 @@ class RoomInviteNotification(BaseNotification):
         return x
 
     @classmethod
-    def from_sender(
-        cls, sender: User, receiver: User, share_token: str, c_m
-    ) -> "RoomInviteNotification":
+    def from_sender(cls, sender: User, receiver: User, share_token: str, c_m) -> 'RoomInviteNotification':
         x = cls()
         x.c_m = c_m
         x.sender = sender
@@ -83,10 +72,10 @@ class RoomInviteNotification(BaseNotification):
 
     def to_dict(self) -> dict:
         return {
-            "sender": self.sender.name,
-            "type": self.notification_type,
-            "shareToken": self.content,
-            "sendTs": self.timestamp,
+            'sender': self.sender.name,
+            'type': self.notification_type,
+            'shareToken': self.content,
+            'sendTs': self.timestamp
         }
 
 
@@ -95,21 +84,18 @@ class NotificationFactory:
         self.c_m = c_m
         self.user = user
 
-    def get_notification(self) -> "list[BaseNotification]":
+    def get_notification(self) -> 'list[BaseNotification]':
         r = []
 
-        self.c_m.execute(
-            """select type, content, sender_user_id, sender_name, timestamp from notification where user_id = ?""",
-            (self.user.user_id,),
-        )
+        self.c_m.execute('''select type, content, sender_user_id, sender_name, timestamp from notification where user_id = ?''',
+                         (self.user.user_id,))
         for i in self.c_m.fetchall():
             x = None
-            if i[0] == "room_inv":
+            if i[0] == 'room_inv':
                 x = RoomInviteNotification.from_list(i, self.user)
 
             if x is not None and not x.is_expired:
                 r.append(x)
         self.c_m.execute(
-            """delete from notification where user_id = ?""", (self.user.user_id,)
-        )
+            '''delete from notification where user_id = ?''', (self.user.user_id,))
         return r
